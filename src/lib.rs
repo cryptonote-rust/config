@@ -8,38 +8,41 @@ pub struct BlockFiles {
 }
 
 pub enum NetType {
-    Main,
-    Test,
+  Main,
+  Test,
 }
 
 pub struct Config {
+  pub prefix: u64,
   pub coinName: String,
   pub genesisCoinBaseTxHex: String,
   pub version: Version,
   pub files: BlockFiles,
-  pub net: NetType
+  pub net: NetType,
 }
 
 impl Config {
   pub fn new(
+    prefix: u64,
     files: BlockFiles,
     coinName: String,
     genesisCoinBaseTxHex: String,
     version: Version,
-    net: NetType
+    net: NetType,
   ) -> Config {
     Config {
+      prefix: u64,
       coinName,
       files,
       genesisCoinBaseTxHex,
       version,
-      net
+      net,
     }
   }
 }
 
 impl BlockFiles {
-  pub fn new(files:  [String; 4]) -> BlockFiles {
+  pub fn new(files: [String; 4]) -> BlockFiles {
     BlockFiles {
       main: files[0].to_string(),
       index: files[1].to_string(),
@@ -55,12 +58,18 @@ mod tests {
   use super::*;
   #[test]
   fn should_create_coin_files() {
-    let files = BlockFiles::new([String::from("a"), String::from("b"), String::from("c"), String::from("d")]);
+    let files = BlockFiles::new([
+      String::from("a"),
+      String::from("b"),
+      String::from("c"),
+      String::from("d"),
+    ]);
     assert!(files.main == "a");
     assert!(files.index == "b");
     assert!(files.cache == "c");
     assert!(files.chainIndex == "d");
     let config = Config::new(
+      0x3d,
       files,
       String::from("vigcoin"),
       String::from("aaa"),
@@ -69,7 +78,7 @@ mod tests {
         minor: 0,
         patch: 0,
       },
-      NetType::Main
+      NetType::Main,
     );
     assert!(config.coinName == "vigcoin");
   }
