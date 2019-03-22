@@ -31,7 +31,7 @@ impl Config {
     net: NetType,
   ) -> Config {
     Config {
-      prefix: u64,
+      prefix,
       coinName,
       files,
       genesisCoinBaseTxHex,
